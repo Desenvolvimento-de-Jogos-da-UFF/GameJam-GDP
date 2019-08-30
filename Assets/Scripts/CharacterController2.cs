@@ -57,6 +57,8 @@ public class CharacterController2 : MonoBehaviour
     public void shoot(bool upShot, bool downShot, bool charged)
     {
 
+        Debug.Log(charged);
+
         if (upShot == true)
         {
 

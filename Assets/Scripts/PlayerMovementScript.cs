@@ -19,6 +19,10 @@ public class PlayerMovementScript : MonoBehaviour
     bool shoot = true;
     [SerializeField] private float shootDelay = 1;
 
+    [SerializeField] private float chargedDelay = 1;
+    private float chargedCur = 0;
+    private bool chargedShot = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,8 +45,10 @@ public class PlayerMovementScript : MonoBehaviour
         jump = Input.GetKeyDown(KeyCode.Space);
         upShot = Input.GetKey(KeyCode.W);
         downShot = Input.GetKey(KeyCode.S);
-        fire = Input.GetKey(KeyCode.K);
+        fire = Input.GetKeyUp(KeyCode.K);
 
+
+        chargedCur += Time.deltaTime;
 
     }
 
@@ -51,11 +57,27 @@ public class PlayerMovementScript : MonoBehaviour
         // Move the character
         controller.move(horizontalMove, jump);
 
-        if(fire && shoot)
+        if(fire)
         {
 
-            controller.shoot(upShot, downShot, false);
-            StartCoroutine(fireRate());
+            if(chargedCur >= chargedDelay)
+            {
+
+                chargedShot = true;
+
+            }
+
+           
+            if (shoot)
+            {
+
+                controller.shoot(upShot, downShot, chargedShot);
+                chargedCur = 0;
+                chargedShot = false;
+                StartCoroutine(fireRate());
+
+            }
+            
 
         }
 
