@@ -12,9 +12,9 @@ public class Grounded : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        player = gameObject.transform.parent.gameObject;
-        movementScript = player.GetComponent<PlayerMovementScript>();
+
+        //player = gameObject.transform.parent.gameObject;
+        movementScript = gameObject.GetComponent<PlayerMovementScript>();
 
     }
 
