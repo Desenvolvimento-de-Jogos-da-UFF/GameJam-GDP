@@ -54,7 +54,7 @@ public class CharacterController2 : MonoBehaviour
             
     }
 
-    public void shoot(bool upShot, bool charged)
+    public void shoot(bool upShot, bool downShot, bool charged)
     {
 
         if (upShot == true)
@@ -65,6 +65,16 @@ public class CharacterController2 : MonoBehaviour
             bulletUp.transform.parent = null;
             bulletUp.transform.position = ceilingCheck.position;
             bulletUp.transform.rotation = ceilingCheck.rotation;
+
+        }
+
+        else if(downShot == true)
+        {
+
+            GameObject bulletDown = Instantiate(bullet, groundCheck);
+            bulletDown.transform.parent = null;
+            bulletDown.transform.position = groundCheck.position;
+            bulletDown.transform.rotation = groundCheck.rotation;
 
         }
 

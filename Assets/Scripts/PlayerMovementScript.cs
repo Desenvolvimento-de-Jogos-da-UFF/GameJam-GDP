@@ -11,8 +11,10 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] public bool isGrounded;
 
     float horizontalMove = 0f;
-    bool Up = false;
+    bool upShot = false;
+    bool downShot = false;
     bool jump = false;
+    bool fire = false;
 
     bool shoot = true;
     [SerializeField] private float shootDelay = 1;
@@ -37,16 +39,10 @@ public class PlayerMovementScript : MonoBehaviour
         
         horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
         jump = Input.GetKeyDown(KeyCode.Space);
-        Up = Input.GetKey(KeyCode.UpArrow);
+        upShot = Input.GetKey(KeyCode.W);
+        downShot = Input.GetKey(KeyCode.S);
+        fire = Input.GetKey(KeyCode.K);
 
-
-        if (Input.GetKey(KeyCode.LeftControl) && shoot)
-        {
-            Debug.Log(Up);
-            controller.shoot(Up, false);
-            StartCoroutine(fireRate());
-        }
-        
 
     }
 
@@ -55,13 +51,13 @@ public class PlayerMovementScript : MonoBehaviour
         // Move the character
         controller.move(horizontalMove, jump);
 
-        if (shoot == true)
+        if(fire && shoot)
         {
 
-            //controller.shoot(shoot);
+            controller.shoot(upShot, downShot, false);
+            StartCoroutine(fireRate());
 
         }
-        //Debug.Log(horizontalMove);
 
 
     }
