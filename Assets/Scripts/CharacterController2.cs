@@ -7,9 +7,13 @@ public class CharacterController2 : MonoBehaviour
     
     [SerializeField] private Transform ceilingCheck;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private GameObject bullet;
+    
+
     private Animator animator;
 
-    private SpriteRenderer sprite;
+    [SerializeField] private SpriteRenderer sprite;
     private PlayerMovementScript selfMovementScript;
     private Rigidbody2D selfRigidBody;
 
@@ -18,10 +22,7 @@ public class CharacterController2 : MonoBehaviour
         selfRigidBody = GetComponent<Rigidbody2D>();
         selfMovementScript = GetComponent<PlayerMovementScript>();
         animator = GetComponentInChildren<Animator>();
-        sprite = GetComponentInChildren<SpriteRenderer>();
-
-        
-
+       
     }
 
     public void move(float moveSpeed, bool jump) {
@@ -30,23 +31,51 @@ public class CharacterController2 : MonoBehaviour
         transform.position += movement * Time.deltaTime;
 
         if(moveSpeed<0){
-            sprite.flipX = true;
-            animator.SetBool("isRunning", true);
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+            //sprite.flipX = true;
+            //animator.SetBool("isRunning", true);
         }else if(moveSpeed > 0){
-            sprite.flipX = false;
-            animator.SetBool("isRunning", true);
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+            //sprite.flipX = false;
+            //animator.SetBool("isRunning", true);
         }else{
-            animator.SetBool("isRunning", false);
+            //animator.SetBool("isRunning", false);
         }
 
+        
         
 
         if (jump && selfMovementScript.isGrounded){
             //selfRigidBody.AddForce(new Vector2(0f, selfMovementScript.jumpForce), ForceMode2D.Impulse);
             selfRigidBody.velocity = new Vector2(selfRigidBody.velocity.x, selfMovementScript.jumpForce);
-            animator.SetTrigger("Jump");
+            //animator.SetTrigger("Jump");
             Debug.Log("SetTrigger");
         }
             
+    }
+
+    public void shoot(bool upShot, bool charged)
+    {
+
+        if (upShot == true)
+        {
+
+            Debug.Log("UP");
+            GameObject bulletUp = Instantiate(bullet, ceilingCheck);
+            bulletUp.transform.parent = null;
+            bulletUp.transform.position = ceilingCheck.position;
+            bulletUp.transform.rotation = ceilingCheck.rotation;
+
+        }
+
+        else
+        {
+            GameObject bulletInstance = Instantiate(bullet, shootPoint);
+            bulletInstance.transform.parent = null;
+            bulletInstance.transform.position = shootPoint.position;
+        }
+
+
+
     }
 }

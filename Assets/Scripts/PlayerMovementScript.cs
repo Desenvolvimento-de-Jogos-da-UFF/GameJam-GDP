@@ -11,7 +11,11 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] public bool isGrounded;
 
     float horizontalMove = 0f;
+    bool Up = false;
     bool jump = false;
+
+    bool shoot = true;
+    [SerializeField] private float shootDelay = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +23,30 @@ public class PlayerMovementScript : MonoBehaviour
         
     }
 
+
+    IEnumerator fireRate()
+    {
+        shoot = false;
+        yield return new WaitForSeconds(shootDelay);
+        shoot = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
         
         horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        jump = Input.GetKeyDown("up");
+        jump = Input.GetKeyDown(KeyCode.Space);
+        Up = Input.GetKey(KeyCode.UpArrow);
+
+
+        if (Input.GetKey(KeyCode.LeftControl) && shoot)
+        {
+            Debug.Log(Up);
+            controller.shoot(Up, false);
+            StartCoroutine(fireRate());
+        }
+        
 
     }
 
@@ -32,6 +54,13 @@ public class PlayerMovementScript : MonoBehaviour
 
         // Move the character
         controller.move(horizontalMove, jump);
+
+        if (shoot == true)
+        {
+
+            //controller.shoot(shoot);
+
+        }
         //Debug.Log(horizontalMove);
 
 
