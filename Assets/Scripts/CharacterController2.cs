@@ -38,6 +38,7 @@ public class CharacterController2 : MonoBehaviour
         }else{
             animator.SetBool("isRunning", false);
         }
+
         
 
         if (jump && selfMovementScript.isGrounded){
